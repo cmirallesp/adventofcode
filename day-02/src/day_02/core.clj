@@ -19,30 +19,29 @@
                     "B" "Y" 
                     "C" "Z"})
 
-(defn get-movement [game]
-  (let [[your-hand my-action] (str/split game #" ") 
-        my-movement (cond
-                   (= my-action "X") (get lose-movement your-hand)
-                   (= my-action "Y") (get draw-movement your-hand)
-                   (= my-action "Z") (get win-movement your-hand))]
-    (str your-hand " " my-movement)))
+(defn calc-my-shape [game]
+  (let [[your-shape my-action] (str/split game #" ")
+        my-shape (cond
+                   (= my-action "X") (get lose-movement your-shape)
+                   (= my-action "Y") (get draw-movement your-shape)
+                   (= my-action "Z") (get win-movement your-shape))]
+    (str your-shape " " my-shape)))
 
 (defn score [game]
-  (let [[_ my-hand] (str/split game #" ") 
-        shape-score (get shape-scores my-hand 3)
-        game-score (get game-scores game 0)]
-    
-      (+ shape-score game-score)))
+  (let [my-shape (second (str/split game #" ")) 
+        shape-score (get shape-scores my-shape 3) 
+        game-score (get game-scores game 0)] 
+    (+ shape-score game-score)))
 
 (defn -main
   []
   (let [lines (->> (slurp "./resources/input.txt")
                    (str/split-lines)) 
-        first (->> lines
+        first (->> lines 
                    (map score)
                    (apply +))
         second (->> lines
-                    (map (comp score get-movement))
+                    (map (comp score calc-my-shape))
                     (apply +))]
     (prn (str "first part:" first)
          (str "second part:" second))))
