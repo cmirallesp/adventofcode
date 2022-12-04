@@ -28,5 +28,5 @@
                    (sort >)
                    (take 3)
                    (apply +))]
-      (println max-calories) 
-      (println top-elves)))
+      (prn 'Max-calories= max-calories) 
+      (prn 'Top-elvels= top-elves)))
